@@ -1,0 +1,74 @@
+#define LS 10      // left sensor
+#define RS 9       // right sensor
+#define LM1 7      // motor Driver in1
+#define LM2 6      // motor Driver in2
+#define RM1 5      // motor Driver in3
+#define RM2 4      // motor Driver in4
+
+#define ENA 3      // PWM pin for left motor speed control
+#define ENB 11     // PWM pin for right motor speed control
+
+void setup()
+{
+  pinMode(LS, INPUT);
+  pinMode(RS, INPUT);
+  pinMode(LM1, OUTPUT);
+  pinMode(LM2, OUTPUT);
+  pinMode(RM1, OUTPUT);
+  pinMode(RM2, OUTPUT);
+
+  pinMode(ENA, OUTPUT);
+  pinMode(ENB, OUTPUT);
+  delay(2000);
+}
+
+void loop()
+{
+  if (!digitalRead(LS) && !digitalRead(RS))
+  {
+    // FORWARD
+    digitalWrite(LM1, HIGH);
+    digitalWrite(LM2, LOW);
+    digitalWrite(RM1, HIGH);
+    digitalWrite(RM2, LOW);
+
+    analogWrite(ENA, 100); // Adjust the PWM value for desired speed (reduced)
+    analogWrite(ENB, 85); // Adjust the PWM value for desired speed (reduced)
+  }
+
+  if (digitalRead(LS) && !digitalRead(RS))
+  {
+    // Right turn
+    digitalWrite(LM1, LOW);
+    digitalWrite(LM2, HIGH);
+    digitalWrite(RM1, HIGH);
+    digitalWrite(RM2, LOW);
+
+    analogWrite(ENA, 110); // Adjust the PWM value for desired speed (reduced)
+    analogWrite(ENB, 130); // Adjust the PWM value for desired speed (reduced)
+  }
+
+  if (!digitalRead(LS) && digitalRead(RS))
+  {
+    // Left turn 
+    digitalWrite(LM1, HIGH);
+    digitalWrite(LM2, LOW);
+    digitalWrite(RM1, LOW);
+    digitalWrite(RM2, HIGH);
+
+    analogWrite(ENA, 130); // Adjust the PWM value for desired speed (reduced)
+    analogWrite(ENB, 110); // Adjust the PWM value for desired speed (reduced)
+  }
+
+  if (digitalRead(LS) && digitalRead(RS))
+  {
+    //STOP IF 2 BLACK IS DETECTED
+    digitalWrite(LM1, LOW);
+    digitalWrite(LM2, LOW);
+    digitalWrite(RM1, LOW);
+    digitalWrite(RM2, LOW);
+
+    analogWrite(ENA, 0); // Adjust the PWM value for desired speed (reduced)
+    analogWrite(ENB, 0); // Adjust the PWM value for desired speed (reduced) 
+  }
+}
